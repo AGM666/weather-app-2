@@ -32,8 +32,18 @@ class ForecastExtended extends Component {
 
     componentDidMount(){
         //fetch or axios
+        this.updateCity(this.props.city);
+    }
 
-        const url_forecast = `${url}?q=${this.props.city}&appid=${apikey}`;
+    componentWillReceiveProps(nextProps) {//se ejecuta cada vez que hay alguna actualizaciones de las propiedades 
+        if (nextProps.city !== this.props.city){
+            this.setState({forecastData: null}) //para acer que aparezca el indicador de carga.
+            this.updateCity(nextProps.city)
+        }
+    }
+    
+    updateCity = city =>{
+        const url_forecast = `${url}?q=${city}&appid=${apikey}`;
 
         fetch(url_forecast).then(
             (data) =>(data.json())
@@ -42,14 +52,9 @@ class ForecastExtended extends Component {
                 console.log(weather_data);
                 const forecastData = transformForecast(weather_data);
                 console.log(forecastData);
-                this.setState({forecastData})
-                
-                
+                this.setState({forecastData})            
             }
-        )
-
-
-
+        );
     }
     
     renderForcastItemDays(forecastData) {

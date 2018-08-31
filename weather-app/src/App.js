@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import { createStore } from 'redux';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import LocationList from './components/LocationList';
 import ForecastExtended from './components/ForecastExtended';
+import { setCity } from './actions';
+import { store} from './store';
 import './App.css';
+import connect from '../node_modules/react-redux/lib/connect/connect';
+import mapDispatchToProps from '../node_modules/react-redux/lib/connect/mapDispatchToProps';
 
 const cities = [
   
@@ -18,6 +23,9 @@ const cities = [
   'Washington,us'
 ];
 
+const mapDispatchToPropsActions = () => {};
+
+const componetConnected = connect(null, mapDispatchToPropsActions)
 class App extends Component {
 constructor(){
   super();
@@ -28,6 +36,8 @@ constructor(){
   handleSelectionLocation = (city) => {
     this.setState({city:city});
     console.log(`handleSelectionLocation ${city}`);
+    
+    store.dispatch(setCity(city));
   }
   //
   render() {
